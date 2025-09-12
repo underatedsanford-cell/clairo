@@ -1,6 +1,0 @@
-{
-  "/_not-found/page": "app/_not-found/page.js",
-  "/trending-niches/page": "app/trending-niches/page.js",
-  "/page": "app/page.js",
-  "/task-runs/[runId]/page": "app/task-runs/[runId]/page.js"
-}
