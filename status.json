@@ -1,0 +1,92 @@
+{
+  "task_runs": {
+    "e2247be1-ab36-447e-a907-84d0fb872aba": {
+      "id": "e2247be1-ab36-447e-a907-84d0fb872aba",
+      "command": "find_leads",
+      "user_id": "1228631731993575444",
+      "parameters": {
+        "num_businesses": 5,
+        "niche": "pipeline in kenya"
+      },
+      "status": "completed",
+      "created_at": "2025-09-11T22:15:25.293185",
+      "updated_at": "2025-09-11T22:16:11.574073",
+      "results": {
+        "leads_added": 5,
+        "outreach_sent": 0,
+        "calls_booked": 0,
+        "followups_scheduled": 0,
+        "leads_found": [
+          {
+            "Lead Name": "Simulated Lead 1 (pipeline in kenya)",
+            "Company": "Simulated Company 1",
+            "Role": "Owner",
+            "Niche": "pipeline in kenya",
+            "Status": "New",
+            "Lead Score": 0
+          },
+          {
+            "Lead Name": "Simulated Lead 2 (pipeline in kenya)",
+            "Company": "Simulated Company 2",
+            "Role": "Owner",
+            "Niche": "pipeline in kenya",
+            "Status": "New",
+            "Lead Score": 0
+          },
+          {
+            "Lead Name": "Simulated Lead 3 (pipeline in kenya)",
+            "Company": "Simulated Company 3",
+            "Role": "Owner",
+            "Niche": "pipeline in kenya",
+            "Status": "New",
+            "Lead Score": 0
+          },
+          {
+            "Lead Name": "Simulated Lead 4 (pipeline in kenya)",
+            "Company": "Simulated Company 4",
+            "Role": "Owner",
+            "Niche": "pipeline in kenya",
+            "Status": "New",
+            "Lead Score": 0
+          },
+          {
+            "Lead Name": "Simulated Lead 5 (pipeline in kenya)",
+            "Company": "Simulated Company 5",
+            "Role": "Owner",
+            "Niche": "pipeline in kenya",
+            "Status": "New",
+            "Lead Score": 0
+          }
+        ]
+      },
+      "logs": [
+        {
+          "timestamp": "2025-09-11T22:15:26.838344",
+          "message": "Task started - searching for leads"
+        },
+        {
+          "timestamp": "2025-09-11T22:15:41.181991",
+          "message": "Found and added 5 potential leads to Google Sheet"
+        },
+        {
+          "timestamp": "2025-09-11T22:16:11.573943",
+          "message": "Task completed successfully"
+        }
+      ],
+      "approval_required": false,
+      "approved": false,
+      "error": null
+    }
+  },
+  "sales_agent_status": {
+    "last_update": "Found 7 businesses in the pipeline niche.",
+    "new_leads_added": 7,
+    "outreach_sent_count": 0,
+    "replies_received_count": 0,
+    "calls_booked_count": 0,
+    "deals_closed_count": 0,
+    "total_pipeline_value": 0,
+    "follow_ups_scheduled_count": 0,
+    "booked_calls_list": []
+  }
+}

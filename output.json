@@ -1,0 +1,28 @@
+[
+    {
+        "Lead Name": "Alice Smith",
+        "Company": "InnovateCorp",
+        "Role": "CTO",
+        "Source URL": "https://www.innovatecorp.com",
+        "Work Email": "",
+        "Direct Phone": "",
+        "SMS Reply": "",
+        "Email Reply": "",
+        "Status": "New",
+        "Timestamp": "",
+        "Deal Value": ""
+    },
+    {
+        "Lead Name": "Bob Johnson",
+        "Company": "FutureTech",
+        "Role": "Head of Sales",
+        "Source URL": "https://www.futuretech.io",
+        "Work Email": "",
+        "Direct Phone": "",
+        "SMS Reply": "",
+        "Email Reply": "",
+        "Status": "New",
+        "Timestamp": "",
+        "Deal Value": ""
+    }
+]
