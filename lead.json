@@ -1,0 +1,12 @@
+{
+  "leads": [
+    {
+      "name": "Test Lead",
+      "company": "Test Inc.",
+      "email": "test@example.com",
+      "phone": "1234567890",
+      "niche": "Testing",
+      "channels": ["email", "whatsapp"]
+    }
+  ]
+}

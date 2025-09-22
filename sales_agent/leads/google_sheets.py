@@ -176,6 +176,17 @@ class GoogleSheet:
             logger.error(f"Error updating lead score for {lead_name}: {e}")
             return False
 
+    async def get_all_sheet_values(self):
+        """Retrieves all values from the 'Leads' sheet."""
+        if not self.sheet:
+            if not await self._open_leads_sheet():
+                return []
+        try:
+            return await asyncio.to_thread(self.sheet.get_all_values)
+        except Exception as e:
+            logger.error(f"Failed to retrieve all values from Google Sheet: {e}")
+            return []
+
     async def get_all_company_names(self):
         """Retrieves all company names from the 'Leads' sheet."""
         if not self.sheet:

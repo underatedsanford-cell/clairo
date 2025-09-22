@@ -31,10 +31,7 @@ GMAIL_SMTP_SERVER = os.environ.get("GMAIL_SMTP_SERVER")
 GMAIL_SMTP_PORT = os.environ.get("GMAIL_SMTP_PORT")
 GMAIL_SMTP_PASSWORD = os.environ.get("GMAIL_SMTP_PASSWORD") # Use app password for security
 
-# Discord Bot Configuration
-DISCORD_BOT_TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
-DISCORD_CHANNEL_ID = os.environ.get("DISCORD_CHANNEL_ID")
-DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
+
 TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
 TWILIO_PHONE_NUMBER = os.environ.get("TWILIO_PHONE_NUMBER")

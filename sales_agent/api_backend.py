@@ -274,141 +274,19 @@ def export_spreadsheet_api():
         logger.error(f"Error in export_spreadsheet_api: {e}")
         return jsonify({"error": str(e)}), 500
 
-# === Discord Bot Control Endpoints ===
 
-REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PID_FILE = os.path.join(REPO_ROOT, 'discord_bot.pid')
-RUN_BOT_PS1 = os.path.join(REPO_ROOT, 'run_bot.ps1')
-LAST_START_FILE = os.path.join(REPO_ROOT, 'discord_bot_last_start.txt')
-
-# Define Python executable and Discord bot path for spawning the bot process
-PYTHON_EXE = sys.executable
-DISCORD_BOT_PATH = os.path.join(REPO_ROOT, 'sales_agent', 'discord_bot.py')
-
-def _is_pid_running(pid: int) -> bool:
+@app.route('/api/sheets', methods=['GET'])
+def get_sheets_api():
+    """Get all values from Google Sheets"""
     try:
-        # On Windows, os.kill with signal 0 is not supported; use tasklist check via subprocess
-        if os.name == "nt":
-            # Using 'tasklist' to check process existence
-            out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}"], capture_output=True, text=True)
-            return str(pid) in out.stdout
-        else:
-            os.kill(pid, 0)
-            return True
-    except Exception:
-        return False
-
-
-def _get_bot_status():
-    info = {"running": False}
-    if os.path.exists(PID_FILE):
-        try:
-            with open(PID_FILE, "r") as f:
-                pid_str = f.read().strip()
-            if pid_str:
-                pid = int(pid_str)
-                info["pid"] = pid
-                info["running"] = _is_pid_running(pid)
-        except Exception as e:
-            info["error"] = str(e)
-    # Attach last start timestamp if present
-    try:
-        if os.path.exists(LAST_START_FILE):
-            with open(LAST_START_FILE, "r") as lf:
-                ts = lf.read().strip()
-                if ts:
-                    info["lastStart"] = ts
-    except Exception:
-        pass
-    return info
-
-
-@app.route("/api/bot/status", methods=["GET"])
-def bot_status_api():
-    info = _get_bot_status()
-    info["success"] = True
-    return jsonify(info)
-
-
-@app.route("/api/bot/start", methods=["POST"])
-def bot_start_api():
-    info = _get_bot_status()
-    if info.get("running"):
-        return jsonify({"success": True, "message": "Bot already running", "pid": info.get("pid"), "lastStart": info.get("lastStart")})
-
-    env = os.environ.copy()
-    # Ensure .env is loaded by discord_bot.py if needed; here we just pass env through
-    try:
-        # Spawn the bot directly
-        proc = subprocess.Popen([PYTHON_EXE, DISCORD_BOT_PATH], env=env, cwd=os.path.dirname(DISCORD_BOT_PATH))
-        pid = proc.pid
-        # Persist PID
-        with open(PID_FILE, "w") as f:
-            f.write(str(pid))
-        # Persist last start timestamp (ISO format)
-        try:
-            with open(LAST_START_FILE, "w") as lf:
-                lf.write(datetime.now().isoformat())
-        except Exception:
-            pass
-        return jsonify({"success": True, "message": "Bot starting", "pid": pid, "lastStart": datetime.now().isoformat()})
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        values = loop.run_until_complete(google_sheet.get_all_sheet_values())
+        loop.close()
+        return jsonify(values)
     except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
-
-
-@app.route("/api/bot/stop", methods=["POST"])
-def bot_stop_api():
-    # Try to read PID
-    if not os.path.exists(PID_FILE):
-        return jsonify({"success": True, "message": "No PID file; bot likely not running"})
-
-    try:
-        with open(PID_FILE, "r") as f:
-            pid_str = f.read().strip()
-        if not pid_str:
-            return jsonify({"success": True, "message": "PID file empty; bot likely not running"})
-        pid = int(pid_str)
-    except Exception as e:
-        return jsonify({"success": False, "error": f"Failed reading PID file: {e}"}), 500
-
-    # Attempt graceful termination
-    try:
-        if os.name == "nt":
-            subprocess.run(["taskkill", "/PID", str(pid), "/T", "/F"], check=False)
-        else:
-            os.kill(pid, signal.SIGTERM)
-        time.sleep(0.5)
-    except Exception as e:
-        # Continue to cleanup even if kill fails
-        pass
-
-    running = _is_pid_running(pid)
-
-    # Cleanup PID file if process is not running anymore
-    if not running and os.path.exists(PID_FILE):
-        try:
-            os.remove(PID_FILE)
-        except Exception:
-            pass
-
-    return jsonify({
-        "success": True,
-        "message": "Stop signal sent" if running else "Bot stopped",
-        "running": running
-    })
-
-
-@app.route("/api/bot/health", methods=["GET"])
-def bot_health_api():
-    info = _get_bot_status()
-    running = bool(info.get("running"))
-    return jsonify({
-        "success": True,
-        "ok": running,
-        "running": running,
-        "pid": info.get("pid"),
-        "lastStart": info.get("lastStart")
-    })
+        logger.error(f"Error in get_sheets_api: {e}")
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/api/realtime-leads/start', methods=['POST'])
 def start_realtime_leads():
